@@ -27,6 +27,30 @@ jobs:
       with:
         gradle-version: '8.2.2'
 
+    - name: Asegurar Archivos de Configuración y Recursos
+      working-directory: ./android
+      run: |
+        mkdir -p gradle/wrapper
+        mkdir -p app/src/main/res/drawable
+        
+        # Crear gradle.properties
+        echo "org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8" > gradle.properties
+        echo "android.useAndroidX=true" >> gradle.properties
+        echo "android.nonTransitiveRClass=true" >> gradle.properties
+
+        # Crear icono vector por defecto
+        cat << 'EOF' > app/src/main/res/drawable/ic_launcher.xml
+        <vector xmlns:android="http://schemas.android.com/apk/res/android"
+            android:width="108dp"
+            android:height="108dp"
+            android:viewportWidth="108"
+            android:viewportHeight="108">
+            <path android:fillColor="#FF2A70" android:pathData="M54,10 C30,10 18,24 18,50 C18,80 54,98 54,98 C54,98 90,80 90,50 C90,24 78,10 54,10 Z" />
+            <path android:fillColor="#FFD700" android:pathData="M38,62 L34,44 L46,52 L54,38 L62,52 L74,44 L70,62 Z" />
+        </vector>
+        EOF
+        cp app/src/main/res/drawable/ic_launcher.xml app/src/main/res/drawable/ic_launcher_round.xml
+
     - name: Compilar APK
       working-directory: ./android
       run: gradle assembleDebug -x lint -x test --no-daemon
