@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0a0d14"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="32dp">
+
+    <!-- Icono de Bloqueo -->
+    <ImageView
+        android:id="@+id/iv_lock_icon"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@android:drawable/ic_lock_lock"
+        app:tint="#ef4444" />
+
+    <TextView
+        android:id="@+id/tv_block_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Tiempo Agotado"
+        android:textColor="#ffffff"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_block_reason"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="Has alcanzado el límite de tiempo diario permitido o el dispositivo se encuentra en horario de descanso."
+        android:textColor="#9ca3af"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_child_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Pídele a tus padres tiempo adicional desde su panel de control."
+        android:textColor="#6b7280"
+        android:textSize="13sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_go_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:backgroundTint="#3b82f6"
+        android:text="Ir a la Pantalla de Inicio"
+        android:textColor="#ffffff" />
+
+</LinearLayout>

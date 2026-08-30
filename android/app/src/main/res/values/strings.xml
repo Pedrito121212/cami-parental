@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Cami Parental</string>
+    <string name="device_admin_description">Permite la supervisión parental y evita que la aplicación sea desinstalada o desactivada por el menor.</string>
+    <string name="accessibility_description">Permite a Cami supervisar qué aplicación está abierta y bloquear aplicaciones no permitidas según el horario establecido.</string>
+    <string name="service_notification_title">Supervisión Cami Activa</string>
+    <string name="service_notification_desc">El control parental está protegiendo este dispositivo.</string>
+</resources>

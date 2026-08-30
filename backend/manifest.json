@@ -1,0 +1,18 @@
+{
+  "name": "Vigilando a Camilita 🌸",
+  "short_name": "Camilita 🌸",
+  "description": "Panel de Protección y Control Parental con Amor para Camilita",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0e0914",
+  "theme_color": "#130d1a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Vigilando a Camilita 🌸 - Control Parental</title>
+    
+    <!-- Metas PWA & iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Camilita 🌸">
+    <meta name="theme-color" content="#130d1a">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+
+    <!-- Fuentes Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css?v=pink-5">
+</head>
+<body class="girl-theme">
+    <!-- Pantalla de Login -->
+    <div id="login-screen" class="screen auth-screen">
+        <div class="auth-card glass-panel">
+            <div class="auth-brand">
+                <div class="logo-shield">
+                    <span class="baby-emoji">👑</span>
+                </div>
+                <h1>Vigilando a Camilita 🌸</h1>
+                <p>Protección y Control Parental con Amor 💖</p>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Usuario de Papá / Mamá</label>
+                    <div class="input-wrap">
+                        <span class="input-icon-emoji">🧸</span>
+                        <input type="text" id="username" placeholder="admin" required autocomplete="username">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <div class="input-wrap">
+                        <span class="input-icon-emoji">🎀</span>
+                        <input type="password" id="password" placeholder="admin123" required autocomplete="current-password">
+                    </div>
+                </div>
+
+                <div id="login-error" class="alert-error hidden"></div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-login">
+                    <span>Entrar al Panel de Camilita ✨</span>
+                    <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <span class="badge-tag">🌸 Cuidando los pasos de Camilita 💖</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aplicación Principal -->
+    <div id="app-container" class="app-layout hidden">
+        
+        <!-- Header Superior -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="app-logo">
+                    <span class="logo-emoji">👑</span>
+                    <span>Vigilando a Camilita 🌸</span>
+                </div>
+
+                <!-- Selector de Dispositivo Activo -->
+                <div class="device-selector-wrap">
+                    <select id="device-select" class="device-select glass-input">
+                        <option value="">Cargando dispositivo de Camilita...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button id="btn-refresh" class="btn-icon" title="Actualizar datos">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                </button>
+                <button id="btn-pair-modal" class="btn btn-accent btn-sm" title="Vincular Dispositivo">
+                    <span>📱 Vincular</span>
+                </button>
+                <button id="btn-logout" class="btn-icon" title="Cerrar Sesión">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Banner de Ayuda iOS Safari (PWA) -->
+        <div id="ios-pwa-banner" class="ios-banner hidden">
+            <div class="ios-banner-content">
+                <span class="ios-icon">🎀</span>
+                <div>
+                    <strong>Instalar en tu iPhone:</strong> Toca compartir <span class="share-icon">⎙</span> y selecciona <em>"Añadir a pantalla de inicio"</em>.
+                </div>
+            </div>
+            <button class="btn-close-banner" onclick="document.getElementById('ios-pwa-banner').classList.add('hidden')">✕</button>
+        </div>
+
+        <!-- Contenedor Principal con Tabs -->
+        <main class="main-content">
+
+            <!-- TAB 1: DASHBOARD EN VIVO -->
+            <section id="tab-dashboard" class="tab-content active">
+                
+                <!-- Tarjeta de Estado de Camilita -->
+                <div class="device-hero-card glass-panel" id="device-hero">
+                    <div class="hero-top">
+                        <div class="child-info">
+                            <div class="avatar-circle" id="child-avatar">👑</div>
+                            <div>
+                                <h2 id="child-name-display">Camilita 🌸</h2>
+                                <p id="device-model-display" class="text-muted">Conectando con su teléfono...</p>
+                            </div>
+                        </div>
+                        <div class="status-badges">
+                            <span class="badge" id="online-badge">
+                                <span class="dot"></span> <span id="online-text">Desconectada</span>
+                            </span>
+                            <span class="badge badge-dpc" id="dpc-badge" title="Modo Device Owner activo">
+                                🎀 Modo Protegido
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Telemetría en Vivo -->
+                    <div class="telemetry-grid">
+                        <div class="telemetry-item">
+                            <div class="telemetry-icon battery-icon">
+                                <span>🔋</span>
+                            </div>
+                            <div>
+                                <div class="telemetry-val" id="battery-val">--%</div>
+                                <div class="telemetry-lbl" id="battery-lbl">Batería</div>
+                            </div>
+                        </div>
+
+                        <div class="telemetry-item">
+                            <div class="telemetry-icon app-icon">
+                                <span>📱</span>
+                            </div>
+                            <div>
+                                <div class="telemetry-val" id="active-app-val">Ninguna</div>
+                                <div class="telemetry-lbl">App que está viendo</div>
+                            </div>
+                        </div>
+
+                        <div class="telemetry-item">
+                            <div class="telemetry-icon time-icon">
+                                <span>⏱️</span>
+                            </div>
+                            <div>
+                                <div class="telemetry-val" id="screen-time-val">0h 0m</div>
+                                <div class="telemetry-lbl">Tiempo de Hoy</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Acciones Rápidas de Padres -->
+                    <div class="quick-actions-bar">
+                        <button id="btn-toggle-lock" class="btn btn-lock btn-lg">
+                            <span class="lock-icon-span">🔒</span>
+                            <span id="lock-btn-text">Pausar Teléfono de Camilita</span>
+                        </button>
+
+                        <div class="bonus-buttons">
+                            <button class="btn btn-secondary btn-sm btn-bonus" data-mins="15">💖 +15 min</button>
+                            <button class="btn btn-secondary btn-sm btn-bonus" data-mins="30">🎀 +30 min</button>
+                            <button class="btn btn-secondary btn-sm btn-bonus" data-mins="60">✨ +1 hora</button>
+                            <button id="btn-delete-device" class="btn btn-secondary btn-sm" title="Eliminar este dispositivo">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen de Horarios y Filtros Rápidos -->
+                <div class="dashboard-grid">
+                    <div class="card glass-panel">
+                        <div class="card-header">
+                            <h3>🌙 Hora de Dormir & Rutinas</h3>
+                            <button class="btn-link" onclick="switchTab('schedules')">Configurar</button>
+                        </div>
+                        <div id="quick-schedules-list" class="mini-list">
+                            <p class="text-muted">Cargando horarios de descanso...</p>
+                        </div>
+                    </div>
+
+                    <div class="card glass-panel">
+                        <div class="card-header">
+                            <h3>🛡️ Protección de Navegación Web</h3>
+                            <button class="btn-link" onclick="switchTab('webfilter')">Editar</button>
+                        </div>
+                        <div class="quick-toggles">
+                            <div class="toggle-row">
+                                <div>
+                                    <strong>🌸 YouTube & Google SafeSearch</strong>
+                                    <p class="text-xs text-muted">Bloquea contenido no apto para niñas</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="quick-safesearch" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-row">
+                                <div>
+                                    <strong>🛡️ Filtro DNS Protector</strong>
+                                    <p class="text-xs text-muted">Bloqueo automático de sitios peligrosos</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="quick-vpnfilter" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apps Más Usadas Hoy -->
+                <div class="card glass-panel mt-4">
+                    <div class="card-header">
+                        <h3>📊 Lo que más ha usado Camilita hoy</h3>
+                        <button class="btn-link" onclick="switchTab('apps')">Ver todas</button>
+                    </div>
+                    <div id="top-apps-list" class="apps-list">
+                        <!-- Render dinámico -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: APLICACIONES Y LÍMITES -->
+            <section id="tab-apps" class="tab-content">
+                <div class="section-header">
+                    <div>
+                        <h2>Aplicaciones de Camilita 🎀</h2>
+                        <p class="text-muted">Bloquea o asigna minutos máximos al día para cada juego o app</p>
+                    </div>
+                    <div class="search-bar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="app-search-input" placeholder="Buscar app...">
+                    </div>
+                </div>
+
+                <!-- Filtros por categoría -->
+                <div class="category-chips">
+                    <button class="chip active" data-cat="all">✨ Todas</button>
+                    <button class="chip" data-cat="games">🎮 Juegos</button>
+                    <button class="chip" data-cat="social">💬 Redes / Mensajes</button>
+                    <button class="chip" data-cat="video">🎬 Videos / Dibujos</button>
+                    <button class="chip" data-cat="education">📚 Educativas</button>
+                    <button class="chip" data-cat="blocked">🚫 Bloqueadas</button>
+                </div>
+
+                <div id="all-apps-list" class="apps-full-grid">
+                    <!-- Apps dinámicas -->
+                </div>
+            </section>
+
+            <!-- TAB 3: HORARIOS Y RUTINAS -->
+            <section id="tab-schedules" class="tab-content">
+                <div class="section-header">
+                    <div>
+                        <h2>Horarios de Descanso y Escuela 🌙</h2>
+                        <p class="text-muted">El teléfono se bloqueará automáticamente a la hora de dormir o estudiar</p>
+                    </div>
+                    <button id="btn-new-schedule" class="btn btn-accent btn-sm">
+                        <span>+ Nuevo Horario</span>
+                    </button>
+                </div>
+
+                <div id="schedules-list" class="schedules-grid">
+                    <!-- Horarios dinámicos -->
+                </div>
+            </section>
+
+            <!-- TAB 4: FILTRO WEB -->
+            <section id="tab-webfilter" class="tab-content">
+                <div class="section-header">
+                    <div>
+                        <h2>Filtro de Internet para Camilita 🌸</h2>
+                        <p class="text-muted">Protege la navegación de páginas no aptas para menores</p>
+                    </div>
+                </div>
+
+                <!-- Categorías de Filtrado -->
+                <div class="card glass-panel mb-4">
+                    <div class="card-header">
+                        <h3>Categorías Bloqueadas Automáticamente</h3>
+                    </div>
+                    <div id="web-categories-list" class="category-toggle-list">
+                        <!-- Categorías dinámicas -->
+                    </div>
+                </div>
+
+                <!-- Lista de Dominios Personalizados -->
+                <div class="card glass-panel">
+                    <div class="card-header">
+                        <h3>Páginas Web Bloqueadas o Permitidas</h3>
+                    </div>
+                    
+                    <form id="add-domain-form" class="add-domain-bar">
+                        <input type="text" id="domain-input" placeholder="ej: tiktok.com o roblox.com" required>
+                        <select id="domain-type-select">
+                            <option value="blacklist">🚫 Bloquear</option>
+                            <option value="whitelist">✅ Permitir Siempre</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Añadir</button>
+                    </form>
+
+                    <div id="domains-table" class="domains-list">
+                        <!-- Dominios dinámicos -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: ESTADÍSTICAS Y REPORTES -->
+            <section id="tab-stats" class="tab-content">
+                <div class="section-header">
+                    <div>
+                        <h2>Actividad y Seguridad de Camilita 📊</h2>
+                        <p class="text-muted">Tiempo de pantalla de la semana y registro de eventos</p>
+                    </div>
+                </div>
+
+                <!-- Gráfico de 7 Días -->
+                <div class="card glass-panel mb-4">
+                    <div class="card-header">
+                        <h3>📈 Horas de Pantalla de los Últimos 7 Días</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="usage-chart" height="180"></canvas>
+                    </div>
+                </div>
+
+                <!-- Registro de Seguridad -->
+                <div class="card glass-panel">
+                    <div class="card-header">
+                        <h3>🛡️ Registro de Alertas</h3>
+                    </div>
+                    <div id="security-events-list" class="events-log-list">
+                        <!-- Eventos dinámicos -->
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Barra de Navegación Inferior Móvil (Estilo iOS) -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="switchTab('dashboard')">
+                <span class="nav-emoji">🏠</span>
+                <span>Inicio</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('apps')">
+                <span class="nav-emoji">🎀</span>
+                <span>Apps</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('schedules')">
+                <span class="nav-emoji">🌙</span>
+                <span>Horarios</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('webfilter')">
+                <span class="nav-emoji">🌸</span>
+                <span>Filtro Web</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('stats')">
+                <span class="nav-emoji">📊</span>
+                <span>Reportes</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- MODAL: Vincular Dispositivo de Camilita (QR & Código) -->
+    <div id="modal-pairing" class="modal-overlay hidden">
+        <div class="modal-card glass-panel">
+            <div class="modal-header">
+                <h3>Vincular Teléfono de Camilita 🌸</h3>
+                <button class="modal-close" onclick="closeModal('modal-pairing')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-3">
+                    <label>Nombre del Menor</label>
+                    <input type="text" id="new-child-name" value="Camilita" placeholder="Camilita" class="form-control">
+                </div>
+                <div class="form-group mb-4">
+                    <label>Nombre del Dispositivo</label>
+                    <input type="text" id="new-device-name" value="Teléfono de Camilita" placeholder="Teléfono de Camilita" class="form-control">
+                </div>
+                <button id="btn-generate-qr" class="btn btn-primary btn-block mb-4">Generar Código QR 🌸</button>
+
+                <div id="qr-result-area" class="hidden text-center">
+                    <div class="qr-box">
+                        <canvas id="qr-canvas"></canvas>
+                    </div>
+                    <p class="text-sm text-muted mt-2">Abre la app Cami en el teléfono de Camilita y escanea este código</p>
+                    <div class="token-copy-box">
+                        <span id="display-pairing-token" class="mono font-bold">CAMI-XXXXX</span>
+                        <button class="btn btn-sm btn-secondary" onclick="copyToken()">Copiar</button>
+                    </div>
+
+                    <!-- Botón para Enviar por WhatsApp -->
+                    <a id="btn-whatsapp-pairing" href="#" target="_blank" class="btn btn-block mt-3" style="background: #25d366 !important; color: #ffffff !important; text-decoration: none; font-weight: 700;">
+                        <span>💬 Enviar enlace de descarga por WhatsApp</span>
+                    </a>
+
+                    <!-- Instrucciones Device Owner -->
+                    <div class="dpc-guide-box mt-3">
+                        <strong>🛡️ Máxima Protección (Imposible de desinstalar):</strong>
+                        <p class="text-xs text-muted">Ejecuta este comando una sola vez por ADB para impedir la desinstalación:</p>
+                        <code class="dpc-cmd">adb shell dpm set-device-owner com.parental.control/.dpc.DeviceAdminReceiver</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Configurar Límite de App -->
+    <div id="modal-app-limit" class="modal-overlay hidden">
+        <div class="modal-card glass-panel">
+            <div class="modal-header">
+                <h3 id="limit-modal-app-name">Límite de Tiempo para Camilita</h3>
+                <button class="modal-close" onclick="closeModal('modal-app-limit')">✕</button>
+            </div>
+            <div class="modal-body">
+                <p class="text-sm text-muted mb-3">Establece los minutos diarios permitidos para esta aplicación:</p>
+                
+                <div class="limit-presets">
+                    <button class="preset-btn" onclick="setLimitPreset(0)">Sin Límite</button>
+                    <button class="preset-btn" onclick="setLimitPreset(15)">15 min</button>
+                    <button class="preset-btn" onclick="setLimitPreset(30)">30 min</button>
+                    <button class="preset-btn" onclick="setLimitPreset(45)">45 min</button>
+                    <button class="preset-btn" onclick="setLimitPreset(60)">1 hora</button>
+                    <button class="preset-btn" onclick="setLimitPreset(120)">2 horas</button>
+                </div>
+
+                <div class="form-group mt-4">
+                    <label>Minutos diarios personalizados:</label>
+                    <input type="number" id="custom-limit-minutes" min="0" max="720" class="form-control" placeholder="0 = Sin límite">
+                </div>
+
+                <button id="btn-save-app-limit" class="btn btn-primary btn-block mt-4">Guardar Límite 💖</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Nuevo Horario -->
+    <div id="modal-schedule" class="modal-overlay hidden">
+        <div class="modal-card glass-panel">
+            <div class="modal-header">
+                <h3 id="schedule-modal-title">Nuevo Horario de Descanso</h3>
+                <button class="modal-close" onclick="closeModal('modal-schedule')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="schedule-form">
+                    <input type="hidden" id="schedule-id" value="0">
+                    <div class="form-group">
+                        <label>Nombre de la Rutina</label>
+                        <input type="text" id="schedule-name" placeholder="Ej: Hora de Dormir Camilita" required class="form-control">
+                    </div>
+                    
+                    <div class="time-range-row">
+                        <div class="form-group">
+                            <label>Hora de Inicio (Pausar)</label>
+                            <input type="time" id="schedule-start" value="21:30" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Hora Fin (Desbloquear)</label>
+                            <input type="time" id="schedule-end" value="07:30" required class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Días Activo</label>
+                        <div class="days-selector">
+                            <label class="day-btn"><input type="checkbox" name="day" value="1" checked><span>L</span></label>
+                            <label class="day-btn"><input type="checkbox" name="day" value="2" checked><span>M</span></label>
+                            <label class="day-btn"><input type="checkbox" name="day" value="3" checked><span>X</span></label>
+                            <label class="day-btn"><input type="checkbox" name="day" value="4" checked><span>J</span></label>
+                            <label class="day-btn"><input type="checkbox" name="day" value="5" checked><span>V</span></label>
+                            <label class="day-btn"><input type="checkbox" name="day" value="6" checked><span>S</span></label>
+                            <label class="day-btn"><input type="checkbox" name="day" value="0" checked><span>D</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de Rutina</label>
+                        <select id="schedule-type" class="form-control">
+                            <option value="bedtime">🌙 Hora de Dormir (Bedtime)</option>
+                            <option value="school">🎒 Horario Escolar / Tareas</option>
+                            <option value="focus">🌸 Tiempo en Familia</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block mt-4">Guardar Horario 💖</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Principal -->
+    <script src="app.js?v=pink-5"></script>
+</body>
+</html>
