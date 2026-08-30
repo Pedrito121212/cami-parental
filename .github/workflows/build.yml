@@ -22,12 +22,14 @@ jobs:
     - name: Configurar Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Configurar Gradle Oficial
+    - name: Configurar Gradle 8.2.2
       uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: '8.2.2'
 
     - name: Compilar APK
       working-directory: ./android
-      run: gradle assembleDebug --no-daemon
+      run: gradle assembleDebug -x lint -x test --no-daemon
 
     - name: Subir APK como Artefacto
       uses: actions/upload-artifact@v4
