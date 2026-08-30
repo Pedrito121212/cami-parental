@@ -1,0 +1,32 @@
+name: Compilar APK Cami Parental 🌸
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar Repositorio
+      uses: actions/checkout@v4
+
+    - name: Configurar Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Compilar APK Debug
+      working-directory: ./android
+      run: |
+        chmod +x gradlew || true
+        ./gradlew assembleDebug --stacktrace
+
+    - name: Subir APK como Artefacto de Descarga
+      uses: actions/upload-artifact@v4
+      with:
+        name: CamiParental-APK
+        path: android/app/build/outputs/apk/debug/app-debug.apk
