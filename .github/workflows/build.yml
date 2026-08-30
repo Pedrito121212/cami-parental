@@ -19,14 +19,18 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Compilar APK Debug
-      working-directory: ./android
-      run: |
-        chmod +x gradlew || true
-        ./gradlew assembleDebug --stacktrace
+    - name: Configurar Android SDK
+      uses: android-actions/setup-android@v3
 
-    - name: Subir APK como Artefacto de Descarga
+    - name: Configurar Gradle Oficial
+      uses: gradle/actions/setup-gradle@v3
+
+    - name: Compilar APK
+      working-directory: ./android
+      run: gradle assembleDebug --no-daemon
+
+    - name: Subir APK como Artefacto
       uses: actions/upload-artifact@v4
       with:
         name: CamiParental-APK
-        path: android/app/build/outputs/apk/debug/app-debug.apk
+        path: android/app/build/outputs/apk/debug/*.apk
